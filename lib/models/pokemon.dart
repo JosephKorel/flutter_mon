@@ -20,6 +20,7 @@ class Pokemon {
     required this.abilities,
   });
 
+  // Trata os dados recebidos da API
   factory Pokemon.fromJson(dynamic json) {
     Map<String, dynamic> sprites = json['sprites'];
     List<dynamic> typeList = json['types'];

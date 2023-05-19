@@ -69,12 +69,12 @@ class PokemonCard extends StatelessWidget {
                         .withOpacity(0.1),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0,
-                        vertical: 2.0,
+                        vertical: 8.0,
                       ),
                       child: Text(
                         capitalizeFirst(pokemon.name),
                         style: Theme.of(context).textTheme.titleMedium,
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),

@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:pokemon_list/components/loading_cards.dart';
 import 'package:pokemon_list/components/pokemon_card.dart';
 import 'package:pokemon_list/helper/utils.dart';
 import 'package:pokemon_list/models/pokemon.dart';
 
+// Pega sempre 12 pokemons
 const pageSize = 12;
 
 class HomeScreen extends StatefulWidget {
@@ -18,6 +20,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final _scrollController = ScrollController();
   final List<Pokemon> _pokemons = [];
   bool loading = false;
+
+  // Número atualiza de acordo com novas chamadas para a API
   int offset = 0;
 
   @override
@@ -85,28 +89,31 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: loading ? const CircularProgressIndicator() : null,
       body: NotificationListener<ScrollNotification>(
         onNotification: (notification) {
+          // Quando chegar no fim da página, pega novos Pokemons
           if (notification.metrics.atEdge && notification.metrics.pixels > 0) {
             _fetchPokemons();
           }
           return false;
         },
-        child: Scrollbar(
-          controller: _scrollController,
-          child: GridView.builder(
-            controller: _scrollController,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 8.0,
-              mainAxisSpacing: 8.0,
-            ),
-            padding: const EdgeInsets.all(8.0),
-            itemCount: _pokemons.length,
-            itemBuilder: (_, index) {
-              final pokemon = _pokemons[index];
-              return PokemonCard(pokemon: pokemon);
-            },
-          ),
-        ),
+        child: _pokemons.isNotEmpty
+            ? LoadingCards()
+            : Scrollbar(
+                controller: _scrollController,
+                child: GridView.builder(
+                  controller: _scrollController,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 8.0,
+                    mainAxisSpacing: 8.0,
+                  ),
+                  padding: const EdgeInsets.all(8.0),
+                  itemCount: _pokemons.length,
+                  itemBuilder: (_, index) {
+                    final pokemon = _pokemons[index];
+                    return PokemonCard(pokemon: pokemon);
+                  },
+                ),
+              ),
       ),
     );
   }
