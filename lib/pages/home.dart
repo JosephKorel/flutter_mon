@@ -55,43 +55,34 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pokemons'),
+        title: const Text('FlutterMon'),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            ElevatedButton(
-              onPressed: _fetchPokemons,
-              child: const Text('Test'),
-            ),
-            FutureBuilder(
-              future: _pokemons,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
-                } else if (snapshot.hasError) {
-                  return const Text('No Pokemon was found');
-                } else if (!snapshot.hasData) {
-                  return const Text('No Pokemon was found');
-                }
-                final pokemonList = snapshot.data!;
-                return Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 52.0),
-                    child: ListView.builder(
-                      itemCount: pokemonList.length,
-                      itemBuilder: (_, index) {
-                        final pokemonList = snapshot.data!;
-                        final pokemon = pokemonList[index];
-                        return PokemonCard(pokemon: pokemon);
-                      },
-                    ),
-                  ),
-                );
-              },
-            )
-          ],
+        child: FutureBuilder(
+          future: _pokemons,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              return const Text('Error while fetching pokemons');
+            } else if (!snapshot.hasData) {
+              return const Text('No Pokemon was found');
+            }
+            final pokemonList = snapshot.data!;
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 52.0),
+              child: ListView.builder(
+                itemCount: pokemonList.length,
+                itemBuilder: (_, index) {
+                  final pokemonList = snapshot.data!;
+                  final pokemon = pokemonList[index];
+                  return PokemonCard(pokemon: pokemon);
+                },
+              ),
+            );
+          },
         ),
       ),
     );
