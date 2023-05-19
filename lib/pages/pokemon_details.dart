@@ -55,6 +55,9 @@ class _PokemonPageState extends State<PokemonPage> {
     final weight = convertHectogramToKilogram(widget.pokemon.weight);
     final height = convertDecimeterToMeter(widget.pokemon.height);
 
+    final type =
+        widget.pokemon.types.map((e) => capitalizeFirst(e)).toList().join(', ');
+
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
@@ -87,15 +90,23 @@ class _PokemonPageState extends State<PokemonPage> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Text(
-                  capitalizeFirst(widget.pokemon.name),
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineMedium!
-                      .copyWith(letterSpacing: 1.4),
-                ),
+              Text(
+                capitalizeFirst(widget.pokemon.name),
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineMedium!
+                    .copyWith(letterSpacing: 1.4),
+              ),
+              Text(
+                'Type: $type',
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withOpacity(0.7)),
+              ),
+              const SizedBox(
+                height: 6.0,
               ),
               Card(
                 child: Padding(
