@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 String capitalizeFirst(String word) {
@@ -10,4 +11,15 @@ void showSnackBar(BuildContext context, String message) {
   );
 
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+}
+
+CachedNetworkImage loadImage(String url) {
+  return CachedNetworkImage(
+    imageUrl: url,
+    placeholder: (context, url) => const SizedBox(
+      height: 80.0,
+      child: Center(child: CircularProgressIndicator()),
+    ),
+    errorWidget: (context, url, error) => const Icon(Icons.error),
+  );
 }

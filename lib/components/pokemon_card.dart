@@ -31,11 +31,7 @@ class PokemonCard extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             children: [
               SizedBox(
-                width: double.infinity,
-                child: Image(
-                  image: NetworkImage(pokemon.avatar),
-                ),
-              ),
+                  width: double.infinity, child: loadImage(pokemon.avatar)),
               SizedBox(
                 width: double.infinity,
                 child: InkWell(
