@@ -86,7 +86,9 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('FlutterMon'),
         centerTitle: true,
       ),
-      floatingActionButton: loading ? const CircularProgressIndicator() : null,
+      floatingActionButton: loading && _pokemons.isNotEmpty
+          ? const CircularProgressIndicator()
+          : null,
       body: NotificationListener<ScrollNotification>(
         onNotification: (notification) {
           // Quando chegar no fim da página, pega novos Pokemons
@@ -95,8 +97,8 @@ class _HomeScreenState extends State<HomeScreen> {
           }
           return false;
         },
-        child: _pokemons.isNotEmpty
-            ? LoadingCards()
+        child: _pokemons.isEmpty
+            ? const LoadingCards()
             : Scrollbar(
                 controller: _scrollController,
                 child: GridView.builder(

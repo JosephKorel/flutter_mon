@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 
 class LoadingCards extends StatefulWidget {
   const LoadingCards({super.key});
@@ -21,9 +22,14 @@ class _LoadingCardsState extends State<LoadingCards> {
       padding: const EdgeInsets.all(8.0),
       itemCount: cards.length,
       itemBuilder: (_, index) {
-        return SizedBox(
-          width: double.infinity,
-          child: Card(),
+        return Container(
+          clipBehavior: Clip.hardEdge,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(8.0)),
+          child: Shimmer(
+            child: SizedBox(
+              width: double.infinity,
+            ),
+          ),
         );
       },
     );
