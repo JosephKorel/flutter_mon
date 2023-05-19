@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokemon_list/models/stats.dart';
 
 @immutable
 class Pokemon {
@@ -7,6 +8,7 @@ class Pokemon {
   final int id;
   final int height;
   final int weight;
+  final List<Stats> stats;
   final List<String> types;
   final List<String> abilities;
 
@@ -16,6 +18,7 @@ class Pokemon {
     required this.id,
     required this.height,
     required this.weight,
+    required this.stats,
     required this.types,
     required this.abilities,
   });
@@ -23,6 +26,7 @@ class Pokemon {
   // Trata os dados recebidos da API
   factory Pokemon.fromJson(dynamic json) {
     Map<String, dynamic> sprites = json['sprites'];
+    List<dynamic> statsList = json['stats'];
     List<dynamic> typeList = json['types'];
     List<dynamic> abilitiesList = json['abilities'];
     String name = json['name'];
@@ -30,6 +34,9 @@ class Pokemon {
     int id = json['id'];
     int height = json['height'];
     int weight = json['weight'];
+    List<Stats> stats = statsList
+        .map((e) => Stats(name: e['stat']['name'], value: e['base_stat']))
+        .toList();
     List<dynamic> typeNames = typeList.map((e) => e['type']['name']).toList();
     List<dynamic> abilitieNames =
         abilitiesList.map((e) => e['ability']['name']).toList();
@@ -39,12 +46,14 @@ class Pokemon {
     List<String> abilities = abilitieNames.map((e) => e.toString()).toList();
 
     return Pokemon(
-        name: name,
-        avatar: avatar,
-        id: id,
-        height: height,
-        weight: weight,
-        types: types,
-        abilities: abilities);
+      name: name,
+      avatar: avatar,
+      id: id,
+      height: height,
+      weight: weight,
+      stats: stats,
+      types: types,
+      abilities: abilities,
+    );
   }
 }

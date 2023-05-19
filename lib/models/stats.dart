@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+
+@immutable
 class Stats {
   final String name;
   final int value;
