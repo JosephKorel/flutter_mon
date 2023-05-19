@@ -7,7 +7,7 @@ import 'package:pokemon_list/helper/utils.dart';
 import 'package:pokemon_list/models/pokemon.dart';
 
 // Pega sempre 12 pokemons
-const pageSize = 2;
+const pageSize = 12;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
