@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 
 String capitalizeFirst(String word) {
   return word[0].toUpperCase() + word.substring(1);
@@ -24,10 +25,12 @@ void showSnackBar(BuildContext context, String message) {
 CachedNetworkImage loadImage(String url) {
   return CachedNetworkImage(
     imageUrl: url,
-    placeholder: (context, url) => const SizedBox(
-      height: 80.0,
-      child: Center(child: CircularProgressIndicator()),
+    placeholder: (context, url) => Shimmer(
+      child: const SizedBox(
+        height: 80.0,
+      ),
     ),
-    errorWidget: (context, url, error) => const Icon(Icons.error),
+    errorWidget: (context, url, error) =>
+        const Center(child: Icon(Icons.error)),
   );
 }

@@ -26,7 +26,7 @@ class _LoadingCardsState extends State<LoadingCards> {
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(8.0)),
           child: Shimmer(
-            child: SizedBox(
+            child: const SizedBox(
               width: double.infinity,
             ),
           ),
