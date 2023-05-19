@@ -5,7 +5,7 @@ import 'package:pokemon_list/components/pokemon_card.dart';
 import 'package:pokemon_list/helper/utils.dart';
 import 'package:pokemon_list/models/pokemon.dart';
 
-const _baseUrl = "https://pokeapi.co/api/v2/pokemon?limit=5";
+const pageSize = 12;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,13 +15,32 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late Future<List<Pokemon>> _pokemons;
+  final _scrollController = ScrollController();
+  final List<Pokemon> _pokemons = [];
+  bool loading = false;
+  int offset = 0;
 
-  Future<List<Pokemon>> _fetchPokemons() async {
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _fetchPokemons() async {
+    if (loading) {
+      return;
+    }
+
+    setState(() {
+      loading = true;
+    });
+
+    String baseUrl =
+        'https://pokeapi.co/api/v2/pokemon?limit=$pageSize&offset=$offset';
     List<Pokemon> fetchedPokemons = [];
 
     try {
-      final request = await http.get(Uri.parse(_baseUrl));
+      final request = await http.get(Uri.parse(baseUrl));
       Map<String, dynamic> body = jsonDecode(request.body);
       List<dynamic> results = body['results'];
 
@@ -38,7 +57,12 @@ class _HomeScreenState extends State<HomeScreen> {
         fetchedPokemons.add(pokemon);
       });
 
-      return fetchedPokemons;
+      offset += pageSize;
+
+      setState(() {
+        _pokemons.addAll(fetchedPokemons);
+        loading = false;
+      });
     } catch (e) {
       showSnackBar(context, 'Error while fetching pokemons');
       rethrow;
@@ -48,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _pokemons = _fetchPokemons();
+    _fetchPokemons();
   }
 
   @override
@@ -58,31 +82,30 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('FlutterMon'),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: FutureBuilder(
-          future: _pokemons,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            } else if (snapshot.hasError) {
-              return const Text('Error while fetching pokemons');
-            } else if (!snapshot.hasData) {
-              return const Text('No Pokemon was found');
-            }
-            final pokemonList = snapshot.data!;
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 52.0),
-              child: ListView.builder(
-                itemCount: pokemonList.length,
-                itemBuilder: (_, index) {
-                  final pokemonList = snapshot.data!;
-                  final pokemon = pokemonList[index];
-                  return PokemonCard(pokemon: pokemon);
-                },
-              ),
-            );
-          },
+      floatingActionButton: loading ? const CircularProgressIndicator() : null,
+      body: NotificationListener<ScrollNotification>(
+        onNotification: (notification) {
+          if (notification.metrics.atEdge && notification.metrics.pixels > 0) {
+            _fetchPokemons();
+          }
+          return false;
+        },
+        child: Scrollbar(
+          controller: _scrollController,
+          child: GridView.builder(
+            controller: _scrollController,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 8.0,
+              mainAxisSpacing: 8.0,
+            ),
+            padding: const EdgeInsets.all(8.0),
+            itemCount: _pokemons.length,
+            itemBuilder: (_, index) {
+              final pokemon = _pokemons[index];
+              return PokemonCard(pokemon: pokemon);
+            },
+          ),
         ),
       ),
     );

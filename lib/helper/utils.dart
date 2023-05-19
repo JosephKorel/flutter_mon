@@ -5,6 +5,14 @@ String capitalizeFirst(String word) {
   return word[0].toUpperCase() + word.substring(1);
 }
 
+double convertDecimeterToMeter(int decimeters) {
+  return decimeters / 10;
+}
+
+double convertHectogramToKilogram(int hectograms) {
+  return hectograms / 10;
+}
+
 void showSnackBar(BuildContext context, String message) {
   SnackBar snackBar = SnackBar(
     content: Text(message),

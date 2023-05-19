@@ -9,6 +9,8 @@ class PokemonPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final weight = convertHectogramToKilogram(pokemon.weight);
+    final height = convertDecimeterToMeter(pokemon.height);
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -75,7 +77,7 @@ class PokemonPage extends StatelessWidget {
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           Text(
-                            pokemon.weight.toString(),
+                            '$weight kg',
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium!
@@ -96,7 +98,7 @@ class PokemonPage extends StatelessWidget {
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           Text(
-                            pokemon.height.toString(),
+                            '$height m',
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium!
