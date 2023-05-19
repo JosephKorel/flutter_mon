@@ -19,6 +19,21 @@ class PokemonPage extends StatelessWidget {
               SizedBox(
                 child: loadImage(pokemon.avatar),
               ),
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius: BorderRadius.circular(32.0),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  child: Text(
+                    '#${pokemon.id}',
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                  ),
+                ),
+              ),
               Text(
                 capitalizeFirst(pokemon.name),
                 style: Theme.of(context)
@@ -98,7 +113,8 @@ class PokemonPage extends StatelessWidget {
                     ],
                   ),
                 ),
-              )
+              ),
+              Text('')
             ],
           ),
         ),
