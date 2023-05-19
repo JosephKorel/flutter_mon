@@ -22,42 +22,42 @@ class PokemonCard extends StatelessWidget {
       );
     }
 
-    return Card(
-      child: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          Positioned(
-            top: 0,
-            left: 0,
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
-                  borderRadius: const BorderRadius.only(
-                      bottomRight: Radius.circular(8.0),
-                      topLeft: Radius.circular(8.0)),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                  child: Text(
-                    '#${pokemon.id}',
-                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        ),
+    return InkWell(
+      onTap: seePokemonDetails,
+      child: Card(
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            Positioned(
+              top: 0,
+              left: 0,
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: const BorderRadius.only(
+                        bottomRight: Radius.circular(8.0),
+                        topLeft: Radius.circular(8.0)),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    child: Text(
+                      '#${pokemon.id}',
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: loadImage(pokemon.avatar),
-          ),
-          SizedBox(
-            width: double.infinity,
-            child: InkWell(
-              onTap: seePokemonDetails,
+            Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: loadImage(pokemon.avatar),
+            ),
+            SizedBox(
+              width: double.infinity,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
                 child: BackdropFilter(
@@ -80,9 +80,9 @@ class PokemonCard extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
