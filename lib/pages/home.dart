@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pokemon_list/components/pokemon_card.dart';
@@ -20,6 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<List<Pokemon>> _fetchPokemons() async {
     List<Pokemon> fetchedPokemons = [];
+
     try {
       final request = await http.get(Uri.parse(_baseUrl));
       Map<String, dynamic> body = jsonDecode(request.body);
@@ -30,18 +30,18 @@ class _HomeScreenState extends State<HomeScreen> {
             'https://pokeapi.co/api/v2/pokemon/${element['name']}';
 
         final pokemonRequest = await http.get(Uri.parse(pokemonUrl));
+
         Map<String, dynamic> body = jsonDecode(pokemonRequest.body);
-        Map<String, dynamic> sprites = body['sprites'];
-        final avatar = sprites['other']['official-artwork']['front_shiny'];
-        final pokemon = Pokemon(name: element['name'], avatar: avatar);
+
+        final pokemon = Pokemon.fromJson(body);
+
         fetchedPokemons.add(pokemon);
       });
 
       return fetchedPokemons;
     } catch (e) {
-      debugPrint(e.toString());
-      debugPrint('Some error ocurred');
-      throw e;
+      showSnackBar(context, 'Error while fetching pokemons');
+      rethrow;
     }
   }
 

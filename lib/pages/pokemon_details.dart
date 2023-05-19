@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:pokemon_list/models/pokemon.dart';
+import 'package:pokemon_list/models/details.dart';
 
-@immutable
-class Details {
-  final Pokemon pokemon;
-  final int id;
-  final int height;
-  final int weight;
-  final String type;
-  final String hability;
+class PokemonPage extends StatelessWidget {
+  const PokemonPage({super.key, required this.pokemon});
 
-  const Details({
-    required this.pokemon,
-    required this.id,
-    required this.height,
-    required this.weight,
-    required this.type,
-    required this.hability,
-  });
+  final PokemonDetail pokemon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(pokemon.name),
+      ),
+    );
+  }
 }

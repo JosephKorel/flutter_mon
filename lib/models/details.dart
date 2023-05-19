@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 @immutable
-class Pokemon {
+class PokemonDetail {
   final String name;
   final String avatar;
   final int id;
@@ -10,7 +10,7 @@ class Pokemon {
   final List<String> types;
   final List<String> abilities;
 
-  const Pokemon({
+  const PokemonDetail({
     required this.name,
     required this.avatar,
     required this.id,
@@ -20,24 +20,21 @@ class Pokemon {
     required this.abilities,
   });
 
-  factory Pokemon.fromJson(dynamic json) {
+  factory PokemonDetail.fromJson(dynamic json) {
     Map<String, dynamic> sprites = json['sprites'];
-    List<dynamic> typeList = json['types'];
-    List<dynamic> abilitiesList = json['abilities'];
+    List<Map<String, dynamic>> typeList = json['types'];
+    List<Map<String, dynamic>> abilitiesList = json['abilities'];
     String name = json['name'];
     String avatar = sprites['other']['official-artwork']['front_shiny'];
     int id = json['id'];
     int height = json['height'];
     int weight = json['weight'];
-    List<dynamic> typeNames = typeList.map((e) => e['type']['name']).toList();
-    List<dynamic> abilitieNames =
-        abilitiesList.map((e) => e['ability']['name']).toList();
+    List<String> types =
+        typeList.map((e) => e['type']['name']).toList() as List<String>;
+    List<String> abilities =
+        abilitiesList.map((e) => e['ability']['name']).toList() as List<String>;
 
-    List<String> types = typeNames.map((e) => e.toString()).toList();
-
-    List<String> abilities = abilitieNames.map((e) => e.toString()).toList();
-
-    return Pokemon(
+    return PokemonDetail(
         name: name,
         avatar: avatar,
         id: id,
