@@ -69,7 +69,6 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     } catch (e) {
       showSnackBar(context, 'Error while fetching pokemons');
-      rethrow;
     }
   }
 
